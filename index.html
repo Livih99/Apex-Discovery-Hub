@@ -535,6 +535,7 @@ button.chip:hover{border-color:var(--ink)}
 .lane.ai pre{white-space:pre-wrap;font-family:var(--body);font-size:.9rem;background:#191C21;border-radius:8px;padding:14px;max-height:220px;overflow:auto;color:#E3E7EC;margin:10px 0 0}
 .lane.ai summary{cursor:pointer;font-weight:600;color:#FFC9CB;font-size:.95rem;padding:4px 0;margin-top:14px}
 .lane textarea.exec{min-height:200px;margin-top:14px}
+.lane .think{margin:0;padding-left:1.2em;display:grid;gap:10px;line-height:1.4}
 .scoreboard{margin-top:22px;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #D2B43A}
 .scoreboard table{width:100%;border-collapse:collapse}
 .scoreboard th,.scoreboard td{padding:10px 14px;border-bottom:1px solid var(--line2);text-align:left;font-size:.98rem}
@@ -856,7 +857,7 @@ button.chip:hover{border-color:var(--ink)}
         <button class="fnode" data-stage="2" data-node="s2"><span class="s">Stage 3</span><b>Stakeholder analysis</b><span class="f">03_Stakeholder_Analysis.docx</span></button>
         <button class="fnode" data-stage="3" data-node="s3"><span class="s">Stage 4</span><b>Evidence gaps and next steps</b><span class="f">04_Evidence_Gaps_and_Next_Steps.docx</span></button>
       </div>
-      <button class="fnode turn" data-stage="4" data-node="turn"><span class="s">Stage 5</span><b>Your turn: beat the AI</b><span class="f">Your team vs live AI</span></button>
+      <button class="fnode turn" data-stage="4" data-node="turn"><span class="s">Stage 5</span><b>Your turn: where would you start?</b><span class="f">Thinking time while AI runs live</span></button>
       <button class="fnode report" data-stage="5" data-node="report"><span class="s" style="color:#FF8F94">Stage 6</span><b style="font-family:var(--display);font-size:1.35rem">Discovery findings report</b><span class="f">Word. Built from the evidence pack and the four analyses.</span></button>
       <button class="fnode deck" data-stage="6" data-node="deck"><span class="s">Stage 7</span><b>Executive deck</b><span class="f">Built from the Word report only</span></button>
     </div>
@@ -1431,32 +1432,30 @@ const PANELS=[
  </div></div>`;},
 ()=>`<div class="panel yourturn" style="margin:-30px;padding:30px;border-radius:14px">
   <div class="step-label" style="color:var(--ink)">Stage 5, live in the room</div>
-  <h2>Can you beat the AI?</h2>
-  <p style="max-width:70ch;margin-top:8px">Write a short executive summary for the sponsor from everything so far. The AI gets the same job, live.</p>
+  <h2>Where would you start?</h2>
+  <p style="max-width:70ch;margin-top:8px">If you were handed this whole pack and asked to summarise it for the sponsor, how would you go about it? No writing needed, just talk it through while the AI does the job live.</p>
   <div class="scale"><div><b>10</b>source documents</div><div><b>4</b>analysis outputs</div><div><b>~19,000</b>words to read</div><div><b>~75 min</b>reading time alone</div></div>
   <div class="lanes">
    <div class="lane team">
     <h3>Your team</h3>
-    <div class="timer"><span class="clock" id="clock">10:00</span><button id="tStart">Start</button><button id="tReset">Reset</button><span class="small" style="color:#C7CDD5">Ten minutes</span></div>
-    <label for="execText" class="sr" style="position:absolute;left:-9999px">Your executive summary</label>
-    <textarea class="exec" id="execText" placeholder="Dear Elena, discovery found that…"></textarea>
-    <div class="small muted" style="margin-top:6px" id="wc">0 words</div>
+    <p style="margin:0 0 8px">Talk it through with the people next to you:</p>
+    <ul class="think">
+     <li>How would you go about reviewing all of these documents?</li>
+     <li>Where would you start, and what order would you read them in?</li>
+     <li>How would you spot contradictions between documents?</li>
+     <li>How would you tell evidence apart from opinion or assumption?</li>
+     <li>How would you keep track of which source each finding came from?</li>
+    </ul>
    </div>
    <div class="lane ai">
     <h3>AI</h3>
-    <div class="timer"><span class="clock" id="aiClock">00:00</span><button id="aiStart">Start</button><button id="aiReset">Reset</button><span class="small" style="color:#C7CDD5">Start when you paste the prompt, stop when it answers</span></div>
-    <p style="color:#C7CDD5;margin:14px 0 0">Run this prompt in your approved AI tool with the source documents and the four analyses. Its answer is revealed in the room.</p>
+    <p style="color:#C7CDD5;margin:0">Run this prompt in your approved AI tool with the source documents and the four analyses. Its answer is revealed in the room.</p>
     <div class="btns"><button class="btn primary" data-copy="exec">Copy prompt</button><button class="btn ghost" data-full="exec" style="background:transparent;color:#fff;border-color:#59616D">See full prompt</button></div>
     <details><summary>Show the prompt here</summary><pre>${esc(PROMPTS.exec.text)}</pre></details>
    </div>
   </div>
-  <div class="scoreboard"><table>
-   <thead><tr><th>Did the summary cover…</th><th class="c">Your team</th><th class="c">AI</th></tr></thead>
-   <tbody>${['What we found','What changed from the original hypotheses','Key risks','Recommended direction','What should happen next'].map((c,i)=>`<tr><td>${c}</td><td class="c"><input type="checkbox" aria-label="${c}: your team" data-sc="0-${i}"></td><td class="c"><input type="checkbox" aria-label="${c}: AI" data-sc="1-${i}"></td></tr>`).join('')}</tbody>
-   <tfoot><tr><td>Score</td><td class="c" id="sc0">0/5</td><td class="c" id="sc1">0/5</td></tr></tfoot>
-  </table></div>
  </div>
- <div class="message" style="margin-top:52px">Would you send either summary to the sponsor unchanged?</div>`,
+ <div class="message" style="margin-top:52px">How close was your approach to what the AI did?</div>`,
 ()=>`<div class="panel-grid"><div>
  <div class="step-label">Stage 6, final output</div><h2>Discovery findings report</h2>
  <p class="muted">A formal Word report that stands on its own. One firm rule: the original evidence is the source of truth, and earlier AI analysis is working material, never evidence.</p>
@@ -1502,38 +1501,16 @@ function dvDownload(){const bin=atob(DECK_PPTX_B64),u=new Uint8Array(bin.length)
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([u],{type:'application/vnd.openxmlformats-officedocument.presentationml.presentation'}));a.download='Discovery_Deck.pptx';document.body.appendChild(a);a.click();a.remove();}
 document.addEventListener('keydown',e=>{if(!document.getElementById('dv'))return;if(/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName))return;
  if(e.key==='ArrowRight')dvGo(dvI+1);else if(e.key==='ArrowLeft')dvGo(dvI-1);});
-let timerS=600,timerH=null;
 function setStage(i){
   stage=i;
   sb.querySelectorAll('button').forEach((b,j)=>{b.classList.toggle('active',j===i);b.classList.toggle('done',j<i);});
   document.querySelectorAll('#flow .fnode').forEach(n=>n.classList.toggle('active',n.dataset.node===STAGES[i].node));
   const p=document.getElementById('stagePanel');p.innerHTML=PANELS[i]()+(i===4?'':'')+nextBtn(i);
-  if(i===4) wireTurn();
   if(i===6) dvInit();
   drawLinks();
 }
 window.setStage=setStage;
 const mmss=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
-let aiS=0,aiH=null;
-function wireTurn(){
-  const ta=document.getElementById('execText'),wc=document.getElementById('wc');
-  ta.value=window._execDraft||'';
-  const upd=()=>{window._execDraft=ta.value;const n=(ta.value.trim().match(/\S+/g)||[]).length;wc.textContent=n+' word'+(n===1?'':'s');};
-  ta.oninput=upd;upd();
-  window._score=window._score||[[0,0,0,0,0],[0,0,0,0,0]];
-  const tally=()=>[0,1].forEach(k=>document.getElementById('sc'+k).textContent=window._score[k].reduce((a,c)=>a+c,0)+'/5');
-  document.querySelectorAll('[data-sc]').forEach(b=>{const [k,i]=b.dataset.sc.split('-').map(Number);b.checked=!!window._score[k][i];b.onchange=()=>{window._score[k][i]=b.checked?1:0;tally();};});
-  tally();
-  const clock=document.getElementById('clock'),bs=document.getElementById('tStart');
-  const show=()=>{clock.textContent=mmss(timerS);};
-  show();bs.textContent=timerH?'Pause':'Start';
-  bs.onclick=()=>{if(timerH){clearInterval(timerH);timerH=null;bs.textContent='Start';}else{timerH=setInterval(()=>{timerS=Math.max(0,timerS-1);const c=document.getElementById('clock');if(c)c.textContent=mmss(timerS);if(timerS===0){clearInterval(timerH);timerH=null;const b=document.getElementById('tStart');if(b)b.textContent='Start';toast('Time\'s up: pens down');}},1000);bs.textContent='Pause';}};
-  document.getElementById('tReset').onclick=()=>{clearInterval(timerH);timerH=null;timerS=600;show();bs.textContent='Start';};
-  const ac=document.getElementById('aiClock'),ab=document.getElementById('aiStart');
-  ac.textContent=mmss(aiS);ab.textContent=aiH?'Stop':'Start';
-  ab.onclick=()=>{if(aiH){clearInterval(aiH);aiH=null;ab.textContent='Start';toast('AI finished in '+mmss(aiS));}else{aiH=setInterval(()=>{aiS++;const c=document.getElementById('aiClock');if(c)c.textContent=mmss(aiS);},1000);ab.textContent='Stop';}};
-  document.getElementById('aiReset').onclick=()=>{clearInterval(aiH);aiH=null;aiS=0;ac.textContent='00:00';ab.textContent='Start';};
-}
 function drawLinks(){
   const flow=document.getElementById('flow'),svg=document.getElementById('links');
   if(!flow.offsetWidth||getComputedStyle(svg).display==='none')return;
